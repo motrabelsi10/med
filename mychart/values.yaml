@@ -9,9 +9,9 @@ image:
   pullPolicy: IfNotPresent
 <<<<<<< HEAD
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v49"
+  tag: "v50"
 =======
-  tag: "v49"
+  tag: "v50"
 >>>>>>> 30c9b38 (values.yaml-photo)
 
 imagePullSecrets: []
