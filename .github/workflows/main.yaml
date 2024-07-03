@@ -1,41 +1,47 @@
-name: Build & Deploy Myapp
+name: Build & Deploy My App
 
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-deploy:
-    name: Build And Deploy MyApp
+    name: Build and Deploy MyApp
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ github.sha }}
+    
     steps:
-      - name: Checkout code 
-        uses: actions/checkout@v3
-
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
       - name: Build Docker Image
-        id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:${{ github.sha }}
-
-      - name: Login to Docker Hub 
-        uses: docker/login-action@v1
-        with: 
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:v${{ github.run_number }}
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Deploy to Argo CD
-        uses: argoproj/argocd-image-updater-action@v2
+      
+      - name: Update Image Tag in Argo CD
+        uses: argoproj-labs/argocd-image-updater-action@v2
         with:
-          server_url: ${{ secrets.ARGOCD_SERVER }}
+          application: <votre_nom_application_argo_cd>
+          server: ${{ secrets.ARGOCD_SERVER }}
           username: ${{ secrets.ARGOCD_USERNAME }}
           password: ${{ secrets.ARGOCD_PASSWORD }}
-          application_name: helm-app-using-terraform
           new_image_tag: ${{ github.sha }}
+
+      - name: Deploy with Argo CD
+        run: |
+          argocd app sync helm-app-using-terraform --prune --self-heal
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
 
