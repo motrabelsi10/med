@@ -5,14 +5,14 @@ Helm est un gestionnaire de packages pour Kubernetes, facilitant le déploiement
 Argo CD est un outil de livraison continue pour Kubernetes, permettant de déployer et de synchroniser automatiquement les applications dans un environnement Kubernetes à partir d'un dépôt Git.
 GitHub Actions est utilisé pour automatiser les workflows de build, test et déploiement directement à partir de GitHub.
 
-## GitOps
+# GitOps
 GitOps est une méthodologie de gestion de l'infrastructure et des applications utilisant Git comme source unique de vérité. Elle implique l'utilisation de Git pour stocker et contrôler la version de tous les fichiers de configuration et le code de l'infrastructure et des applications, puis l'utilisation de l'automatisation pour garantir que l'état du système correspond toujours à l'état désiré défini dans Git. Cette approche permet des déploiements plus rapides et plus fiables, ainsi qu'une collaboration et un contrôle de version plus faciles.
 
-## CI/CD with GitOps, Github Actions, Helm and ArgoCD
+# CI/CD with GitOps, Github Actions, Helm and ArgoCD
 ![Texte Alternatif](images/cicd-pipeline.png)
 
-## Prérequis
-
+# Prérequis
+## Helm
 1. **Installer Helm**
 
    Pour installer Helm, suivez ces étapes :
@@ -56,7 +56,7 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
 
 6. **Files**
 
-   A.***Structure du Chart Helm***
+   ***A. Structure du Chart Helm***
 
             my-chart/
 
@@ -79,17 +79,34 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
             └── ...
 
 
-   B.***Values.yaml***
+   ***B. Values.yaml***
 
       Il est utilisé pour définir et personnaliser les valeurs des variables utilisées dans les templates Kubernetes du chart.
       Le fichier values.yaml contient les valeurs par défaut pour les variables de configuration de votre chart Helm. Ce fichier est utilisé pour définir les configurations que vous pouvez personnaliser lorsque vous déployez votre application. Voici un exemple de ce         que vous pourriez trouver dans values.yaml :
 
       ![Texte Alternatif](images/image.png)
    
-   C.***Deployment.yaml***
+   ***C. Deployment.yaml***
 
       Le fichier deployment.yaml est un template Kubernetes pour le déploiement de vos applications. Ce fichier utilise les valeurs définies dans values.yaml pour créer les ressources Kubernetes nécessaires. Voici un exemple de deployment.yaml :
 
       ![Texte Alternatif](images/image1.png)
+
+# ArgoCD 
+
+   1. **Definition**
+   
+   ArgoCD is a popular open-source GitOps tool for managing Kubernetes applications. It uses a pull-based model to continuously monitor the Git repository for changes and automatically deploy them to the target environment.
+   
+   Argocd has a controller inside the cluster 
+   
+   argocd is a pull model
+
+   - Continious Delivery Tool
+   - Déploiements GitOps
+   - Interface utilisateur et CLI
+   - Gestion de plusieurs clusters
+   - Synchronisation automatisée et manuelle
+   - faciliter le déploiement et la gestion continus d'applications dans des environnements Kubernetes en utilisant des pratiques GitOps.
 
       
