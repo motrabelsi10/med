@@ -11,3 +11,25 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
 ## CI/CD with GitOps, Github Actions, Helm and ArgoCD
 ![Texte Alternatif](images/cicd-pipeline.png)
 
+## Prérequis
+
+1. **Installer Helm**
+
+   Pour installer Helm, suivez ces étapes :
+
+   ```bash
+   curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+   sudo apt-get install apt-transport-https --yes
+   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+   sudo apt-get update
+   sudo apt-get install helm
+
+   Pour créer un nouveau chart avec Helm, exécutez la commande suivante :
+   ```bash
+   helm create my-chart
+
+   Pour libérer une nouvelle version à partir de votre chart, utilisez la commande suivante :
+   ```bash
+   helm install my-release ./my-chart
+
+   
