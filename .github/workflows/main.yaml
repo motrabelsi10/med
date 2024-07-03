@@ -37,7 +37,7 @@ jobs:
 
       - name: Update image tag in values.yaml
         run: |
-          TAG=${{ github.sha }}
+          TAG=v${{ github.run_number }}
           sed -i "s/tag: .*/tag: \"$TAG\"/" mychart/values.yaml
 
       - name: Commit and push changes to repository
@@ -47,5 +47,5 @@ jobs:
           git config user.email "trabelsi.mohamed.1@esprit.tn"
           git config user.name "motrabelsi10"
           git add mychart/values.yaml
-          git commit -m "Update image tag to ${{ github.sha }}"
+          git commit -m "Update image tag to v${{ github.run_number }}"
           git push origin main
