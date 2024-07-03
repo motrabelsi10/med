@@ -119,7 +119,6 @@ mysql:
 phpmyadmin:
   enabled: true
   image: phpmyadmin
-    
   tag: latest
   service:
     type: NodePort

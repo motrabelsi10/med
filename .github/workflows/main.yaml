@@ -40,7 +40,6 @@ jobs:
           TAG=v${{ github.run_number }}
           sed -i "/^  repository: motrabelsi10\/testpipeline$/,/^  .*$/ s/^  tag: .*/  tag: \"$TAG\"/" mychart/values.yaml
 
-
       - name: Commit and push changes to repository
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
