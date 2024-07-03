@@ -8,18 +8,8 @@ image:
   repository: motrabelsi10/testpipeline
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1"
+  tag: "v2"
 
-annotations:
-  argocd-image-updater/enable: "true"
-  argocd-image-updater/image-list: |
-    [
-      {
-        "container": "mychart",
-        "image": "motrabelsi10/test:v2"
-      }
-    ]
-  
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
