@@ -35,14 +35,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:v${{ github.run_number }}
 
-      - name: Update image tag for testpipeline in values.yaml
+      - name: Update image tags in values.yaml
         run: |
-          TAG=v${{ github.run_number }}
-          sed -i "/^  repository: motrabelsi10\/testpipeline$/,/^  .*$/ s/^  tag: .*/  tag: \"$TAG\"/" mychart/values.yaml
-
-      - name: Ensure phpmyadmin tag is latest in values.yaml
-        run: |
-          sed -i "/^phpmyadmin:$/,/^  .*$/ s/^  tag: .*/  tag: \"latest\"/" mychart/values.yaml
+          TAG_PIPELINE=v${{ github.run_number }}
+          sed -i "s/^  tag: .*/  tag: \"$TAG_PIPELINE\"/" mychart/values.yaml
+          sed -i "s/^  tag: .*/  tag: \"latest\"/" mychart/values.yaml
 
       - name: Commit and push changes to repository
         env:
@@ -51,5 +48,5 @@ jobs:
           git config user.email "trabelsi.mohamed.1@esprit.tn"
           git config user.name "motrabelsi10"
           git add mychart/values.yaml
-          git commit -m "Update image tags"
+          git commit -m "Update image tags for testpipeline and phpmyadmin"
           git push origin main
