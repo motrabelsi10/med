@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-deploy:
-    name: Build And Deploy MyApp Incha2alah !
+    name: Build And Deploy MyApp
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,18 +35,17 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:v${{ github.run_number }}
 
-      - name: Update image tag for testpipeline in values.yaml
+      - name: Update image tag in values.yaml
         run: |
-          TAG=v${{ github.run_number }}
-          sed -i "s/tag: .image/tag: \"$TAG\"/" mychart/values.yaml
-
+          TAG=${{ github.sha }}
+          sed -i "s/tag: .*/tag: \"$TAG\"/" mychart/values.yaml
 
       - name: Commit and push changes to repository
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.email "trabelsi.mohamed.1@esprit.tn"
           git config user.name "motrabelsi10"
           git add mychart/values.yaml
-          git commit -m "Update image tag to v${{ github.run_number }}"
-          git push
+          git commit -m "Update image tag to ${{ github.sha }}"
+          git push origin main
