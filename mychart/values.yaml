@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: motrabelsi10/testpipeline
+  repository: motrabelsi10/med
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v38"
