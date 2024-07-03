@@ -38,7 +38,7 @@ jobs:
       - name: Update image tag in values.yaml
         run: |
           TAG=v${{ github.run_number }}
-          sed -i "s/tag: .*/tag: \"$TAG\"/" mychart/values.yaml
+          sed -i "s/^  tag: .*/  tag: \"$TAG\"/" mychart/values.yaml
 
       - name: Commit and push changes to repository
         env:
