@@ -37,8 +37,8 @@ jobs:
 
       - name: Update Image Tag in Argo CD
         run: |
-          argocd app set <votre_nom_application_argo_cd> --parameter image.tag="${{ github.sha }}"
-          argocd app sync <votre_nom_application_argo_cd> --prune --self-heal
+          argocd app set helm-app-using-terraform --parameter image.tag="${{ github.sha }}"
+          argocd app sync helm-app-using-terraform --prune --self-heal
         env:
           ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
           ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
