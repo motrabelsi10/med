@@ -41,9 +41,11 @@ jobs:
           sed -i "s/tag: .*/tag: \"$TAG\"/" mychart/values.yaml
 
       - name: Commit and push changes to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
-          git config --global user.email "trabelsi.mohamed.1@esprit.tn"
-          git config --global user.name "motrabelsi10"
+          git config user.email "trabelsi.mohamed.1@esprit.tn"
+          git config user.name "motrabelsi10"
           git add mychart/values.yaml
           git commit -m "Update image tag to ${{ github.sha }}"
-          git push
+          git push origin main
