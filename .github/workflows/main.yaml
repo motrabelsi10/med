@@ -38,7 +38,8 @@ jobs:
       - name: Update image tag for testpipeline in values.yaml
         run: |
           TAG=v${{ github.run_number }}
-          sed -i "/^  repository: motrabelsi10\/testpipeline$/,/^  .*$/ s/^  tag: .*/  tag: \"$TAG\"/" mychart/values.yaml
+          sed -i "s/tag: .image/tag: \"$TAG\"/" mychart/values.yaml
+
 
       - name: Commit and push changes to repository
         env:
