@@ -8,7 +8,7 @@ image:
   repository: motrabelsi10/med
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v41"
+  tag: "v42"
 
 imagePullSecrets: []
 nameOverride: ""
