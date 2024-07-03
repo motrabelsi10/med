@@ -49,4 +49,4 @@ jobs:
           git config user.name "motrabelsi10"
           git add mychart/values.yaml
           git commit -m "Update image tag to v${{ github.run_number }}"
-          git push origin main
+          git push
