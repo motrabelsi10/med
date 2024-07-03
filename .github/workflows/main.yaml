@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-deploy:
-    name: Build And Deploy MyApp
+    name: Build And Deploy MyApp nchalah !
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
