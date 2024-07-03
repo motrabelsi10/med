@@ -38,7 +38,8 @@ jobs:
       - name: Update image tags in values.yaml
         run: |
           TAG_PIPELINE=v${{ github.run_number }}
-          sed -i "s/^  image/tag: .*/  image/tag: \"$TAG_PIPELINE\"/" mychart/values.yaml
+          sed -i "s/^ *tag: \"v[0-9]*\"$/  tag: \"$TAG_PIPELINE\"/" mychart/values.yaml
+
 
       - name: Commit and push changes to repository
         env:
