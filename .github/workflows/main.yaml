@@ -35,16 +35,15 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:v${{ github.run_number }}
 
-      - name: Install Argo CD CLI
+      - name: Update image tag in values.yaml
         run: |
-          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-          chmod +x /usr/local/bin/argocd
+          TAG=${{ github.sha }}
+          sed -i "s/tag: .*/tag: \"$TAG\"/" mychart/values.yaml
 
-      - name: Update Image Tag in Argo CD
+      - name: Commit and push changes to repository
         run: |
-          /usr/local/bin/argocd app set helm-app-using-terraform --parameter image.tag="${{ github.sha }}" --server ${{ secrets.ARGOCD_SERVER }}
-          /usr/local/bin/argocd app sync helm-app-using-terraform --prune --self-heal --server ${{ secrets.ARGOCD_SERVER }}
-        env:
-          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
-          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
-          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
+          git config --global user.email "trabelsi.mohamed.1@esprit.tn"
+          git config --global user.name "motrabelsi10"
+          git add mychart/values.yaml
+          git commit -m "Update image tag to ${{ github.sha }}"
+          git push
