@@ -29,16 +29,8 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       
       - name: Update Image Tag in Argo CD
-        uses: argoproj-labs/argocd-image-updater-action@v2
-        with:
-          application: <votre_nom_application_argo_cd>
-          server: ${{ secrets.ARGOCD_SERVER }}
-          username: ${{ secrets.ARGOCD_USERNAME }}
-          password: ${{ secrets.ARGOCD_PASSWORD }}
-          new_image_tag: ${{ github.sha }}
-
-      - name: Deploy with Argo CD
         run: |
+          argocd app set helm-app-using-terraform --parameter image.tag="${{ github.sha }}"
           argocd app sync helm-app-using-terraform --prune --self-heal
         env:
           ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
