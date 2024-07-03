@@ -55,12 +55,27 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
    Avant Helm, le déploiement d'applications sur Kubernetes nécessitait de gérer manuellement les fichiers de configuration YAML pour chaque ressource Kubernetes (Deployments, Services, ConfigMaps, Secrets, etc.).
 
 6. **Files**
-   A.***Values.yaml***
+   A.***Structure du Chart Helm***
+            my-chart/
+            ├── Chart.yaml
+            ├── values.yaml
+            ├── charts/
+            ├── templates/
+            │   ├── deployment.yaml
+            │   ├── service.yaml
+            │   ├── _helpers.tpl
+            │   └── ...
+            └── ...
+
+
+   B.***Values.yaml***
+
       Il est utilisé pour définir et personnaliser les valeurs des variables utilisées dans les templates Kubernetes du chart.
       Le fichier values.yaml contient les valeurs par défaut pour les variables de configuration de votre chart Helm. Ce fichier est utilisé pour définir les configurations que vous pouvez personnaliser lorsque vous déployez votre application. Voici un exemple de ce         que vous pourriez trouver dans values.yaml :
       ![Texte Alternatif](images/image.png)
    
-   B.***Deployment.yaml***
+   C.***Deployment.yaml***
+
       Le fichier deployment.yaml est un template Kubernetes pour le déploiement de vos applications. Ce fichier utilise les valeurs définies dans values.yaml pour créer les ressources Kubernetes nécessaires. Voici un exemple de deployment.yaml :
       ![Texte Alternatif](images/image1.png)
 
