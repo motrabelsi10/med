@@ -120,7 +120,7 @@ phpmyadmin:
   enabled: true
   image: phpmyadmin
     
-  tag: "v23"
+  tag: latest
   service:
     type: NodePort
     port: 8080
