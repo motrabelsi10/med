@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-phpmyadmin
+  labels:
+    {{- include "mychart.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "mychart.selectorLabels" . | nindent 6 }}
+      component: phpmyadmin
+  template:
+    metadata:
+      labels:
+        {{- include "mychart.labels" . | nindent 8 }}
+        component: phpmyadmin
+    spec:
+      containers:
+        - name: phpmyadmin
+          image: "{{ .Values.phpmyadmin.image }}:{{ .Values.phpmyadmin.tag }}"
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: PMA_HOST
+              value: "{{ .Values.phpmyadmin.mariadbHost }}"
+            - name: PMA_PORT
+              value: "{{ .Values.phpmyadmin.mariadbPort }}"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.phpmyadmin.existingSecret }}"
+                  key: mysql-root-password
+          resources:
+            {{- toYaml .Values.phpmyadmin.resources | nindent 12 }}
