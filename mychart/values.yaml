@@ -8,7 +8,7 @@ image:
   repository: motrabelsi10/testpipeline
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v22"
+  tag: "v23"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -120,7 +120,7 @@ phpmyadmin:
   enabled: true
   image: phpmyadmin
     
-  tag: latest
+  tag: "v23"
   service:
     type: NodePort
     port: 8080
