@@ -34,9 +34,7 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/testpipeline:v2
-      
-      - name: List all files in stage/pipeline
-        run: ls -l stage/pipeline
+    
 
 
 
