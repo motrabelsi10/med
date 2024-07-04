@@ -110,3 +110,106 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
    - faciliter le déploiement et la gestion continus d'applications dans des environnements Kubernetes en utilisant des pratiques GitOps.
 
       
+   2. **Installation**
+   
+   ```bash
+   kubectl create namespace argocd
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
+   
+   3. **Download Argo CD CLI**
+
+   ```bash
+   brew install argocd
+   ```
+   
+   4. **Access The Argo CD API Server**
+   
+   ```bash
+   kubectl port-forward svc/argocd-server -n argocd 8080:443
+   ```
+
+   5. **Login Using The CLI**
+    
+   ```bash
+   argocd admin initial-password -n argocd   
+   ```
+
+   Using the username admin and the password from above, login to Argo CD's IP or hostname:
+
+   ```bash
+   argocd login <ARGOCD_SERVER>
+   ```
+
+   Change the password using the command:
+
+   ```bash
+   argocd account update-password
+   ```
+
+   3. **Create An Application From A Git Repository**
+
+      ***A. Using Terraform***   
+      
+      ![Texte Alternatif](images/image3.png)
+
+      
+      ***Prérequis***
+
+         Terraform doit être installé et configuré.
+         Accès à un cluster Kubernetes avec Argo CD installé.
+         Accès à un dépôt Git contenant les fichiers nécessaires pour votre application.
+
+         ***Metadata***
+         ****name****: Nom de l'application Argo CD.
+         ****namespace****: Namespace où Argo CD est installé.
+         ****labels****: Labels optionnels pour l'application.
+
+         ***Spec***
+         ****project****: Projet Argo CD sous lequel l'application sera gérée.
+         
+         ***Destination***
+         
+         ****server****: URL du serveur API Kubernetes.
+         ****namespace****: Namespace cible dans le cluster Kubernetes.
+
+         ***Source***         
+         ****repo_url****: URL du dépôt Git contenant le chart Helm.
+         ****path****: Chemin dans le dépôt où se trouve le chart Helm.
+         ****target_revision****: Branche, tag ou commit Git à utiliser.
+
+         ***Helm***
+         ****release_name****: Nom de la release Helm.
+         ****value_files****: Liste optionnelle de fichiers de valeu````rs Helm.
+
+         ***Sync Policy***         
+         ****prune****: Supprime automatiquement les ressources non définies dans la source.
+         ****self_heal****: Synchronise automatiquement l'application si elle diverge de l'état souhaité.
+
+      ***Initialiser et Appliquer la Configuration Terraform***
+
+         ```bash
+         terraform init
+         terraform plan
+         terraform apply
+         ```
+
+      ***B. Creating Apps Via UI***
+      
+      After logging in, click the + New App button as shown below:
+      Give your app the name my-app , use the project default, and leave the sync policy as Manual
+
+      Connect the <repo_URL> repo to Argo CD by setting repository url to the github repo url, leave revision as HEAD, and set the path to <Helm_Directory>
+      
+      For Destination, set cluster URL to https://kubernetes.default.svc (or in-cluster for cluster name) and namespace to default
+
+      After filling out the information above, click Create at the top of the UI to create the my-app application
+
+   4. **Sync (Deploy) The Application**
+
+      The application status is initially in OutOfSync state since the application has yet to be deployed, and no Kubernetes resources have been created. To sync (deploy) the application, run:
+      
+         ```bash
+         argocd app get my-app
+         argocd app sync my-app
+         ```

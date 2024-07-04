@@ -6,7 +6,6 @@ resource "argocd_application" "helm" {
       test = "true"
     }
   }
-
   spec {
     project = "default"
 
@@ -14,7 +13,6 @@ resource "argocd_application" "helm" {
       server    = "https://kubernetes.default.svc"
       namespace = "default"
     }
-
     source {
       repo_url        = "https://github.com/motrabelsi10/med.git"
       path            = "mychart"
@@ -24,7 +22,6 @@ resource "argocd_application" "helm" {
         value_files  = []
       }
     }
-
     sync_policy {
       automated {
         prune    = true
