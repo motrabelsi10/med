@@ -56,5 +56,9 @@ jobs:
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
       - name: Upgrade Helm release
+        env:
+          KUBECONFIG: ${{ github.workspace }}/.kube/config
         run: |
           helm upgrade my-release ./mychart --namespace mynamespace
+
+
