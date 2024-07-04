@@ -57,4 +57,4 @@ jobs:
 
       - name: Upgrade Helm release
         run: |
-          helm upgrade my-release med/mychart --namespace mynamespace --install --set image.tag=v${{ github.run_number }}
+          helm upgrade my-release med/mychart --namespace mynamespace
