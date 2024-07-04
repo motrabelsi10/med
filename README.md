@@ -9,7 +9,7 @@ GitHub Actions est utilisé pour automatiser les workflows de build, test et dé
 GitOps est une méthodologie de gestion de l'infrastructure et des applications utilisant Git comme source unique de vérité. Elle implique l'utilisation de Git pour stocker et contrôler la version de tous les fichiers de configuration et le code de l'infrastructure et des applications, puis l'utilisation de l'automatisation pour garantir que l'état du système correspond toujours à l'état désiré défini dans Git. Cette approche permet des déploiements plus rapides et plus fiables, ainsi qu'une collaboration et un contrôle de version plus faciles.
 
 # CI/CD with GitOps, Github Actions, Helm and ArgoCD
-![Texte Alternatif](images/cicd-pipeline.png)
+![Texte Alternatif](images/cicd.png)
 
 # Prérequis
 ## Helm
@@ -102,6 +102,16 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
    
    argocd is a pull model
 
+   Argo CD dispose d’une interface utilisateur Web conviviale qui facilite la visualisation et la gestion des applications déployées.
+
+   L’outil permet le déploiement continu d’applications en surveillant les modifications du dépôt de code et en déployant automatiquement les modifications.
+
+   Il prend en charge la gestion des versions, ce qui facilite le suivi des modifications et permet le déploiement de versions spécifiques de l’application.
+
+   Argo CD valide les ressources Kubernetes avant leur déploiement, ce qui garantit la qualité des déploiements et réduit les risques d’erreurs de configuration.
+
+   Enfin, il peut être intégré avec des outils CI/CD pour créer un pipeline complet de déploiement continu.
+
    - Continious Delivery Tool
    - Déploiements GitOps
    - Interface utilisateur et CLI
@@ -109,27 +119,74 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
    - Synchronisation automatisée et manuelle
    - faciliter le déploiement et la gestion continus d'applications dans des environnements Kubernetes en utilisant des pratiques GitOps.
 
-      
-   2. **Installation**
+
+   2. **Comment Argo CD fonctionne** 
+
+      ![Texte Alternatif](images/argoworkflow.png)
+
+   Le fonctionnement d’Argo CD peut être décrit en quatre étapes principales :
+
+   Récupération du code :
+   Argo CD récupère le code source de l’application depuis un dépôt de code Git. Ce référentiel peut être considéré comme la source de vérité : celle qui définit l’état cible (target state) de l’infrastructure.
+
+   Réconciliation :
+   Argo CD compare l’état actuel de l’infrastructure avec l’état cible défini dans le référentiel Git. Si des différences sont détectées, Argo CD détermine les actions nécessaires pour synchroniser l’infrastructure réelle avec l’état cible.
+
+      La boucle de réconciliation: 
+         Observe :
+            Récupérer le contenu du dépôt Git.
+            Récupérer l’état de infrastructure.
+         Diff :
+            Comparer le dépôt avec l’infrastructure.
+         Act :
+            Réconcilier l’architecture avec le contenu du Git.
+
+   Présentation :
+   Argo CD présente les actions à effectuer pour amener l’infrastructure à l’état cible. Cela peut inclure la création ou la suppression de ressources Kubernetes, la mise à jour de la configuration de ces ressources, etc. Les actions sont présentées dans un tableau de bord où l’utilisateur peut les examiner et les approuver ou les rejeter.
+
+   Déploiement :
+   Une fois que l’utilisateur a approuvé les actions présentées par Argo CD, celles-ci sont appliquées sur l’infrastructure réelle pour la synchroniser avec l’état cible. Argo CD suit l’état des actions en temps réel et fournit des informations détaillées sur les éventuelles erreurs. L’utilisateur peut également annuler les actions en cours de déploiement si nécessaire.
+
+
+   ----------------------------------------------------------------------------------------------------------------------------------
+
+   Le principe fondamental d’Argo CD est la synchronisation (sync) continue de l’état désiré de l’infrastructure avec son état réel (live state). En d’autres termes, l’outil s’assure que l’état de l’infrastructure correspond en permanence à l’état défini par le code d’infrastructure au sein du dépôt de code (Infra as Code).
+
+   Argo CD gère les applications, qui sont des groupes de ressources Kubernetes définies par un manifeste.
+   Chaque application définit sa source, qui peut être soit :
+
+      – Un ensemble de fichier yaml rassemblés au sein d’un dépôt de code git
+      – Un chart helm sur un dépôt Helm
+
+   L’état cible (target state) d’une application est l’état souhaité de l’application tel que représenté par le code infrastructure stocké dans le dépôt de code Git, tandis que l’état réel (live state) est l’état actuel de l’application au sein du cluster Kubernetes, comprenant les pods, les services et d’autres ressources.
+
+   Le statut de synchronisation (sync status) indique si l’état réel correspond à l’état cible. Si la synchronisation est requise, Argo CD effectue une opération de synchronisation (sync) pour amener l’application à son état cible en appliquant les modifications nécessaires sur le cluster Kubernetes. Le statut de l’opération de synchronisation indique si la synchronisation a réussi ou échoué.
+
+   Argo CD utilise également une fonction de rafraîchissement (refresh) pour comparer le code le plus récent dans Git avec l’état réel de l’application. Cela permet à Argo CD de détecter les différences et de les résoudre en effectuant une nouvelle opération de synchronisation.
+
+   Enfin, Argo CD surveille la santé de l’application pour s’assurer qu’elle fonctionne correctement et qu’elle puisse traiter les demandes. Le statut de santé (health) indique directement si l’application est fonctionnelle ou non.
+
+
+   3. **Installation**
    
    ```bash
    kubectl create namespace argocd
    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
    ```
    
-   3. **Download Argo CD CLI**
+   A. **Download Argo CD CLI**
 
    ```bash
    brew install argocd
    ```
    
-   4. **Access The Argo CD API Server**
+   B. **Access The Argo CD API Server**
    
    ```bash
    kubectl port-forward svc/argocd-server -n argocd 8080:443
    ```
 
-   5. **Login Using The CLI**
+   C. **Login Using The CLI**
     
    ```bash
    argocd admin initial-password -n argocd   
@@ -147,7 +204,7 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
    argocd account update-password
    ```
 
-   3. **Create An Application From A Git Repository**
+   4. **Create An Application From A Git Repository**
 
       ***A. Using Terraform***   
       
@@ -205,7 +262,7 @@ GitOps est une méthodologie de gestion de l'infrastructure et des applications 
 
       After filling out the information above, click Create at the top of the UI to create the my-app application
 
-   4. **Sync (Deploy) The Application**
+   5. **Sync (Deploy) The Application**
 
       The application status is initially in OutOfSync state since the application has yet to be deployed, and no Kubernetes resources have been created. To sync (deploy) the application, run:
       

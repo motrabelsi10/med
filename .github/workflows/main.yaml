@@ -50,3 +50,11 @@ jobs:
           git add mychart/values.yaml
           git commit -m "Update image tag"
           git push origin main
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Upgrade Helm release
+        run: |
+          helm upgrade my-release med/mychart --namespace mynamespace --install --set image.tag=v${{ github.run_number }}
