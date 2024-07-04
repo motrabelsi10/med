@@ -55,10 +55,6 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-      - name: Add Helm repository
-        run: |
-          helm repo add med <repository_url>
-
       - name: Upgrade Helm release
         run: |
-          helm upgrade my-release med/mychart --namespace mynamespace
+          helm upgrade my-release ./mychart --namespace mynamespace
