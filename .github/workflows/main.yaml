@@ -88,7 +88,7 @@ jobs:
 
       - name: Start Minikube
         run: |
-          sudo minikube start --driver=docker
+          sudo minikube start --driver=docker --force
           sudo minikube status
 
       - name: Install kubectl
