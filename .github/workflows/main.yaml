@@ -51,7 +51,13 @@ jobs:
           git commit -m "Update image tag v${{ github.run_number }}"
           git push origin main
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Update Helm Release
+        uses: WyriHaximus/github-action-helm3@v3
+        with:
+          command: upgrade
+          chart: ./mychart 
+          release: my-release
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          version: v${{ github.run_number }}
+          values: |
+            tag: "v${{ github.run_number }}"  # Mettez à jour les valeurs spécifiques si nécessaire
