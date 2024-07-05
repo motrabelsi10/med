@@ -53,9 +53,7 @@ jobs:
 
       - name: Update Helm Release
         run: |
-          helm upgrade my-release ./mychart \
-            --kubeconfig "${{ secrets.KUBECONFIG }}" \
-            --set tag="v${{ github.run_number }}"
+          helm upgrade my-release mychart --kubeconfig "${{ secrets.KUBECONFIG }}" --set tag="v${{ github.run_number }}"
 
 
 
