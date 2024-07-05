@@ -8,7 +8,7 @@ on:
 jobs:
   build-deploy:
     name: Build And Deploy MyApp
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,7 +39,6 @@ jobs:
         run: |
           TAG=v${{ github.run_number }}
           sed -i "s/^ *tag: \"v[0-9]*\"$/  tag: \"$TAG\"/" mychart/values.yaml
-
 
       - name: Commit and push changes to repository
         env:
@@ -91,6 +90,10 @@ jobs:
           sudo minikube start --driver=docker --force
           sudo minikube status
 
+      - name: Configure kubectl
+        run: |
+          sudo minikube update-context
+
       - name: Install kubectl
         run: |
           curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -100,6 +103,10 @@ jobs:
       - name: Install Helm
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Verify Minikube status
+        run: |
+          sudo minikube status
 
       - name: Upgrade Helm release
         run: |
