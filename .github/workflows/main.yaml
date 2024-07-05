@@ -52,9 +52,15 @@ jobs:
           git push origin main
 
       - name: Update Helm Release
-        run: |
-          helm upgrade my-release mychart --kubeconfig "${{ secrets.KUBECONFIG }}" --set tag="v${{ github.run_number }}"
-
+        uses: WyriHaximus/github-action-helm3@v3
+        with:
+          command: upgrade
+          chart: ./mychart
+          release: my-release
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          version: v${{ github.run_number }}
+          values: |
+              tag: "v${{ github.run_number }}"
 
 
       - name: Run chart-releaser
