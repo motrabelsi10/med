@@ -57,7 +57,11 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
       - name: Verify kubectl access
-        run: kubectl version --kubeconfig=~/.kube/config
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          kubectl version --kubeconfig=~/.kube/config
+
 
       - name: Deploy to Kubernetes
         uses: WyriHaximus/github-action-helm3@v3
