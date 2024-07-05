@@ -51,15 +51,17 @@ jobs:
           git commit -m "Update image tag"
           git push origin main
 
-      # Install Helm CLI
-      - name: Install Helm CLI
+      - name: Set up kubectl
         run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
-      # Deploy using Helm
-      - name: Deploy with Helm
+      - name: Verify kubectl access
+        run: kubectl version --kubeconfig=~/.kube/config
+
+      - name: Deploy to Kubernetes
         uses: WyriHaximus/github-action-helm3@v3
         with:
-          exec: helm upgrade my-release mychart --install --wait --atomic --namespace mynamespace --values ./mychart/values.yaml
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
-          overrule_existing_kubeconfig: "true"
+          kubeconfig: ~/.kube/config
+          chart: ./charts/mychart
+          release: myapp
