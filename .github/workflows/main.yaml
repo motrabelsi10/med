@@ -51,14 +51,15 @@ jobs:
           git commit -m "Update image tag"
           git push origin main
 
-      - name: Set up Minikube
-        uses: manusa/actions-setup-minikube@v2.4.0
-        with:
-          minikube version: 'latest'
-          kubernetes version: 'v1.23.3'  # spécifiez la version de Kubernetes que vous utilisez
+      - name: Install Minikube
+        run: |
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
       - name: Start Minikube
-        run: minikube start --driver=docker
+        run: |
+          sudo minikube start --driver=none
+          sudo minikube status
 
       - name: Install kubectl
         run: |
