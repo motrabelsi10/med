@@ -51,14 +51,25 @@ jobs:
           git commit -m "Update image tag"
           git push origin main
 
+      - name: Set up Minikube
+        uses: manusa/actions-setup-minikube@v2.4.0
+        with:
+          minikube version: 'latest'
+          kubernetes version: 'v1.23.3'  # spécifiez la version de Kubernetes que vous utilisez
+
+      - name: Start Minikube
+        run: minikube start --driver=docker
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
       - name: Install Helm
         run: |
-          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
       - name: Upgrade Helm release
-        env:
-          KUBECONFIG: ${{ github.workspace }}/.kube/config
         run: |
-          helm upgrade my-release ./mychart --namespace mynamespace
-
-
+          helm upgrade my-release mychart --namespace mynamespace
