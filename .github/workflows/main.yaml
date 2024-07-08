@@ -60,6 +60,15 @@ jobs:
         env:
           KUBECONFIG: $HOME/.kube/config
 
+      - name: Verify Kubernetes Context
+        run: |
+          kubectl config view
+          kubectl config current-context
+          kubectl get nodes
+        shell: /usr/bin/bash -e {0}
+        env:
+          KUBECONFIG: $HOME/.kube/config
+
       - name: Restart Kubernetes deployment
         run: |
           kubectl rollout restart deployment/my-release -n mynamespace
