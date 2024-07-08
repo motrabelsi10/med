@@ -51,27 +51,3 @@ jobs:
           git commit -m "Update image tag v${{ github.run_number }}"
           git push origin main
 
-      - name: Set up Kubernetes
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-        shell: /usr/bin/bash -e {0}
-        env:
-          KUBECONFIG: $HOME/.kube/config
-
-      - name: Verify Kubernetes Context
-        run: |
-          kubectl config view
-          kubectl config current-context
-          kubectl get nodes
-        shell: /usr/bin/bash -e {0}
-        env:
-          KUBECONFIG: $HOME/.kube/config
-
-      - name: Restart Kubernetes deployment
-        run: |
-          kubectl rollout restart deployment/my-release -n mynamespace
-        shell: /usr/bin/bash -e {0}
-        env:
-          KUBECONFIG: $HOME/.kube/config
