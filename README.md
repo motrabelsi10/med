@@ -153,8 +153,42 @@ Mode pull => c'est l'infrastructure qui va elle-meme cherher sa configuration su
    Déploiement :
    Une fois que l’utilisateur a approuvé les actions présentées par Argo CD, celles-ci sont appliquées sur l’infrastructure réelle pour la synchroniser avec l’état cible. Argo CD suit l’état des actions en temps réel et fournit des informations détaillées sur les éventuelles erreurs. L’utilisateur peut également annuler les actions en cours de déploiement si nécessaire.
 
+   ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-   ----------------------------------------------------------------------------------------------------------------------------------
+   ***Auto-Pruning***
+
+   Cette fonctionnalité est très intéressante pour éviter de garder des ressources inutiles dans le cluster. Lors d’une réconciliation, ArgoCD va supprimer les ressources qui ne sont plus présentes dans le dépôt Git.
+
+   Pour l’activer depuis la ligne de commande :
+
+   ```bash
+   argocd app set argocd/simple-app --auto-prune
+   ```
+   Ou depuis le manifest de l’application (à mettre dans le spec de l’application) :
+
+   ```bash
+   syncPolicy:
+   automated:
+      prune: true
+   ```
+
+   ***Self-Heal***
+
+   Le self-heal est une fonctionnalité qui permet de réconcilier automatiquement le cluster si une ressource est modifiée manuellement. Par exemple, si un utilisateur modifie un secret, ArgoCD va remarquer cette différence entre le cluster et la source de vérité avant de supprimer ce delta.
+
+   Pour l’activer depuis la ligne de commande :
+
+   ```bash
+   argocd app set argocd/simple-app --self-heal
+   ```
+   Ou depuis le manifest de l’application (à mettre dans le spec de l’application) :
+
+   ```bash
+   syncPolicy:
+   automated:
+      selfHeal: true
+   ```      
+   ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
    Le principe fondamental d’Argo CD est la synchronisation (sync) continue de l’état désiré de l’infrastructure avec son état réel (live state). En d’autres termes, l’outil s’assure que l’état de l’infrastructure correspond en permanence à l’état défini par le code d’infrastructure au sein du dépôt de code (Infra as Code).
 
