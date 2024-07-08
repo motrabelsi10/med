@@ -8,6 +8,12 @@ GitHub Actions est utilisé pour automatiser les workflows de build, test et dé
 # GitOps
 GitOps est une méthodologie de gestion de l'infrastructure et des applications utilisant Git comme source unique de vérité. Elle implique l'utilisation de Git pour stocker et contrôler la version de tous les fichiers de configuration et le code de l'infrastructure et des applications, puis l'utilisation de l'automatisation pour garantir que l'état du système correspond toujours à l'état désiré défini dans Git. Cette approche permet des déploiements plus rapides et plus fiables, ainsi qu'une collaboration et un contrôle de version plus faciles.
 
+# Pull vs Push
+
+synchroniser l'infrastructure avec le code 
+
+Mode pull => c'est l'infrastructure qui va elle-meme cherher sa configuration sur le dépot Git.
+
 # CI/CD with GitOps, Github Actions, Helm and ArgoCD
 ![Texte Alternatif](images/cicd.png)
 
