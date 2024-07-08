@@ -22,6 +22,10 @@ resource "argocd_application" "helm" {
         value_files  = []
       }
     }
+    secret_ref {
+      secret_name = "test-private-repo"
+      namespace   = "argocd"
+      }
     sync_policy {
       automated {
         prune    = true
