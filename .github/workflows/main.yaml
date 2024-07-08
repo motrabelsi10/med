@@ -60,8 +60,9 @@ jobs:
         env:
           KUBECONFIG: $HOME/.kube/config
 
-      - name: Trigger Argo CD Sync
+      - name: Restart Kubernetes deployment
         run: |
-          kubectl rollout restart my-release mychart -n mynamespace
+          kubectl rollout restart deployment/my-release -n mynamespace
+        shell: /usr/bin/bash -e {0}
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+          KUBECONFIG: $HOME/.kube/config
