@@ -51,6 +51,13 @@ jobs:
           git commit -m "Update image tag v${{ github.run_number }}"
           git push origin main
 
+      - name: Set up Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+        env:
+          KUBECONFIG: $HOME/.kube/config
+
       - name: Trigger Argo CD Sync
         run: |
           kubectl rollout restart my-release mychart -n mynamespace
