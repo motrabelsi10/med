@@ -208,7 +208,45 @@ Mode pull => c'est l'infrastructure qui va elle-meme cherher sa configuration su
 
 
    3. **Installation**
+
+   3.1 **With Helm**
+
+   ***Step 1: Add argo cd repo***
+
+   ```bash
+      helm repo add argo https://argoproj.github.io/argo-helm
+      helm search repo argo
+   ```
+
+   ****Step 2: Customize Helm Chart Configuration Values***
+
+   Before deploying you need to update NodePort configurations in the helm chart so that you can access Argo CD UI in the browser, for that use the below command to save the default values of the helm chart in a YML file.
+
+   ```bash
+      helm show values argo/argo-cd > values.yaml
+      helm fetch argo/argo-cd
+      tar -zxvf argo-cd-<version>.tgz
+   ```
+
+   ****Step 3: Deploy Argo CD****
+   ```bash
+      kubectl create namespace argocd
+      helm install --values values.yaml argocd argo/argo-cd --namespace argocd
+      kubectl get all -n argocd
+   ```
    
+   ****Step 4: Log in to Argo CD Web UI****
+
+   ```bash
+      kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+      kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 --decode ; echo
+   ```
+
+
+
+   3.2 **Manuellement**
+
    ```bash
    kubectl create namespace argocd
    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
