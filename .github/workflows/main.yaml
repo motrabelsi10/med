@@ -58,19 +58,4 @@ jobs:
           git commit -m "Update image tag v${{ github.run_number }}"
           git push origin main
 
-      - name: Install Argo CD CLI
-        run: |
-          # Install Argo CD CLI
-          VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | jq -r .tag_name)
-          curl -sSL -o /usr/local/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/${VERSION}/argocd-linux-amd64"
-          chmod +x /usr/local/bin/argocd
-
-      - name: Configure Argo CD CLI
-        env:
-          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
-          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
-          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
-        run: |
-          # Log in to Argo CD
-          argocd login $ARGOCD_SERVER --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD --insecure
 
