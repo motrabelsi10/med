@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build-deploy:
-    name: Build And Deploy MyApp yalla
+  ci:
+    name: Continuous Integration - Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,11 +35,18 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/med:v${{ github.run_number }}
 
+  cd:
+    name: Continuous Deployment - Update Helm Chart and Deploy with Argo CD
+    runs-on: ubuntu-latest
+    needs: ci  # This ensures the 'cd' job runs only after 'ci' job is successful
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Update image tags in values.yaml
         run: |
           TAG=v${{ github.run_number }}
           sed -i "s/^ *tag: \"v[0-9]*\"$/  tag: \"$TAG\"/" mychart/values.yaml
-
 
       - name: Commit and push changes to repository
         env:
