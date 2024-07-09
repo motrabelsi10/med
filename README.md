@@ -207,6 +207,14 @@ Mode pull => c'est l'infrastructure qui va elle-meme cherher sa configuration su
    Enfin, Argo CD surveille la santé de l’application pour s’assurer qu’elle fonctionne correctement et qu’elle puisse traiter les demandes. Le statut de santé (health) indique directement si l’application est fonctionnelle ou non.
 
 
+   | Concept | Description | Quand utilisé | But |
+   |---------|-------------|---------------|-----|
+   | Refresh | Compare le code dans Git avec l'état actuel de l'application dans le cluster | Manuellement ou automatiquement | Détecter les différences entre l'état réel et l'état cible |
+   | Sync | Applique les modifications nécessaires pour aligner l'état actuel avec l'état cible | Manuellement ou automatiquement | Assurer que l'infrastructure correspond à l'état cible |
+   | Health | Surveille l'état opérationnel de l'application et des ressources Kubernetes | Continu et automatique | Assurer que l'application est fonctionnelle et performante |
+
+
+
    3. **Installation**
 
    3.1 **With Helm**
@@ -218,7 +226,7 @@ Mode pull => c'est l'infrastructure qui va elle-meme cherher sa configuration su
       helm search repo argo
    ```
 
-   ****Step 2: Customize Helm Chart Configuration Values***
+   ***Step 2: Customize Helm Chart Configuration Values***
 
    Before deploying you need to update NodePort configurations in the helm chart so that you can access Argo CD UI in the browser, for that use the below command to save the default values of the helm chart in a YML file.
 
