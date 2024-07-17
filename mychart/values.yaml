@@ -9,7 +9,7 @@ env:
 image:
   repository: motrabelsi10/med
   pullPolicy: IfNotPresent
-  tag: "v100"
+  tag: "v101"
 
 imagePullSecrets: []
 nameOverride: ""
