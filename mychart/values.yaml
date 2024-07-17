@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: motrabelsi10/med
   pullPolicy: IfNotPresent
-  tag: "v101"
+  tag: "v102"
 
 imagePullSecrets: []
 nameOverride: ""
