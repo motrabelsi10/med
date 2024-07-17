@@ -24,10 +24,7 @@ resource "argocd_application" "helm" {
       target_revision = "main"
       helm {
         release_name = "my-release"
-        value_files  = [
-          "values.yaml",
-          "secrets://secrets.yaml"
-        ]
+        value_files  = []
       }
     }
 
