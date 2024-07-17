@@ -1,7 +1,7 @@
 resource "argocd_application" "helm" {
   metadata {
-    name      = "helm-app-using-terraform"
-    namespace = "argocd"
+    name        = "helm-app-using-terraform"
+    namespace   = "argocd"
     annotations = {
       "notifications.argoproj.io/subscribe.on-deployed.slack" = "argocd"
     }
@@ -24,7 +24,10 @@ resource "argocd_application" "helm" {
       target_revision = "main"
       helm {
         release_name = "my-release"
-        value_files  = []
+        value_files  = [
+          "values.yaml",
+          "secrets://secrets.yaml"
+        ]
       }
     }
 
